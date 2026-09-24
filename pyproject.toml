@@ -3,8 +3,8 @@ name = "claudex-learn"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
-    "curl-cffi>=0.16.3",
     "pyyaml>=6.0.3",
+    "requests>=2.34.2",
     "trafilatura>=2.2.0",
     "youtube-transcript-api>=1.2.4",
 ]

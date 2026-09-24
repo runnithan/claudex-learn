@@ -34,12 +34,8 @@ import yaml
 from common import first_heading, read_frontmatter, slugify, topic_dir
 
 try:
-    # curl_cffi replays a real Chrome TLS handshake. YouTube's caption endpoint
-    # fingerprints the handshake, and plain `requests` reads as a bot however
-    # gently it is paced. Its exceptions do not subclass requests', hence the import.
+    import requests
     import trafilatura
-    from curl_cffi import requests as cffi_requests
-    from curl_cffi.requests.exceptions import RequestException as CurlRequestException
     from youtube_transcript_api import (
         AgeRestricted,
         InvalidVideoId,
@@ -92,8 +88,8 @@ def _env_number(name: str, default: float) -> float:
 REQUEST_TIMEOUT = 12
 FETCH_DEADLINE = 20
 ARTICLE_DEADLINE = 45
-# Stop after this many new YouTube transcripts in one run, and space fetches by a
-# random gap, so a big list does not trip YouTube's per-IP transcript limit.
+# Stop after this many new YouTube transcripts in one run, and wait a few seconds
+# between fetches, so a long list doesn't hammer YouTube.
 MAX_PER_RUN = int(_env_number("MAX_TRANSCRIPTS_PER_RUN", 40))
 FETCH_SLEEP_MIN = _env_number("FETCH_SLEEP_MIN", 4)
 FETCH_SLEEP_MAX = _env_number("FETCH_SLEEP_MAX", 8)
@@ -256,12 +252,11 @@ def with_deadline(fn, seconds: float):
     return box["value"]
 
 
-class _BrowserSession(cffi_requests.Session):
-    """curl_cffi session that impersonates Chrome and always applies a timeout."""
+class _TimeoutSession(requests.Session):
+    """A plain requests session that always applies a timeout."""
 
     def request(self, *args, **kwargs):
         kwargs.setdefault("timeout", REQUEST_TIMEOUT)
-        kwargs.setdefault("impersonate", "chrome")
         return super().request(*args, **kwargs)
 
 
@@ -327,14 +322,14 @@ def fetch_youtube(video_id: str) -> tuple[str, str]:
     """(timestamped transcript, language code). Raises Blocked on timeouts and throttling."""
 
     def _fetch():
-        track = pick_track(YouTubeTranscriptApi(http_client=_BrowserSession()).list(video_id))
+        track = pick_track(YouTubeTranscriptApi(http_client=_TimeoutSession()).list(video_id))
         if track is None:
             raise NoTracks("no caption tracks")
         return track.fetch(), track.language_code
 
     try:
         snippets, language = with_deadline(_fetch, FETCH_DEADLINE)
-    except (TimeoutError, CurlRequestException) as e:
+    except (TimeoutError, requests.exceptions.RequestException) as e:
         raise Blocked(str(e)) from e
     except TRANSIENT_ERRORS as e:
         raise Blocked(type(e).__name__) from e
