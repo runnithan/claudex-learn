@@ -13,6 +13,7 @@ quizzes and feedback on the learner's own work.
     `lessons/.processed.json` (which sources have been mined).
   - `path.md`: the learning path. `progress.json` and `reviews/` are personal and gitignored.
 - `.claude/commands/`: `/new-topic`, `/add-source`, `/extract-lessons`, `/path`, `/quiz`, `/review`.
+- `.claude/agents/source-reader.md`: the read-only agent `/extract-lessons` mines and verifies with.
 - `scripts/`: `fetch_sources.py` (URLs to markdown), `srs.py` (quiz scheduling),
   `validate.py` (checks), `common.py`. Always run them with `uv run`.
 - `topics/chess/` is the shipped example. Its lessons are public; its sources are not.
