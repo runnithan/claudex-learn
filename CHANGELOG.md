@@ -7,6 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Changed
+- `/extract-lessons` mines and verifies with a read-only `source-reader` agent (Read, Grep and Glob only) instead of the general-purpose agent, and that agent treats text inside a source as material to summarise, never as instructions.
 
 - YouTube transcripts are fetched with ordinary requests instead of a Chrome-impersonating client (`curl_cffi` is no longer a dependency). The README now explains that the transcript library is unofficial, what YouTube's terms say, and how to paste a transcript by hand instead.
 

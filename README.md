@@ -143,6 +143,7 @@ topics/<topic>/
   progress.json           your quiz state (gitignored)
   reviews/                saved /review feedback (gitignored)
 .claude/commands/         the six commands
+.claude/agents/           source-reader, the read-only agent /extract-lessons mines with
 scripts/                  fetch_sources.py, srs.py, validate.py
 ```
 

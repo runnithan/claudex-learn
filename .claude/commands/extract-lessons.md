@@ -52,7 +52,8 @@ existing ones. Never rename one: its lessons would have to move.
 
 Sources are long, so subagents read them in full. Batch roughly 25k words per subagent (the
 `words:` field in each source's frontmatter, or `wc -w`), and run at most 4 at a time. Use the
-general-purpose agent type, not Explore: Explore reads excerpts, and a miner has to read every word.
+`source-reader` agent type: it reads every word (Explore reads excerpts) and can only read,
+because sources are third-party text that may contain instructions aimed at an agent.
 
 Give each miner its source paths, the topic's goal and level, the categories, every existing
 lesson id with its INDEX hook, and these rules:
@@ -140,7 +141,7 @@ Omit `## Related` if nothing relates.
 ## Verify before anything is indexed
 
 The session that mined the lessons is the worst judge of them. Once the new lesson files are
-written, spawn a **fresh** subagent (never a fork: a fork inherits this context and grades its
+written, spawn a **fresh** `source-reader` subagent (never a fork: a fork inherits this context and grades its
 own work) with each new lesson's path and the source it cites. It reports, lesson by lesson,
 whether the source supports the TL;DR and How to apply, and whether the timestamp lands near
 the idea. Check every lesson if there are fewer than 10, otherwise at least a fifth of them
