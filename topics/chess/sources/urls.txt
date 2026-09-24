@@ -1,0 +1,7 @@
+# One URL per line: YouTube videos or web articles.
+# Lines starting with # are ignored. Run /add-source or
+# `uv run scripts/fetch_sources.py <topic>` to fetch them.
+https://www.youtube.com/watch?v=jfcVjIa1EGM
+https://www.youtube.com/watch?v=0La3dokkUnE
+https://www.youtube.com/watch?v=uszf3ZRxYMo
+https://en.wikipedia.org/wiki/Chess_strategy
