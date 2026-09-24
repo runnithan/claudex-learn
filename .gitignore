@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+
+# Your learning material and progress stay on your machine. Transcripts and articles
+# belong to their authors, so only the list of URLs is committed.
+topics/*/sources/*
+!topics/*/sources/urls.txt
+topics/*/progress.json
+topics/*/.progress-*.json
+topics/*/reviews/
