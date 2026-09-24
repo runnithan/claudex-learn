@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- YouTube transcripts are fetched with ordinary requests instead of a Chrome-impersonating client (`curl_cffi` is no longer a dependency). The README now explains that the transcript library is unofficial, what YouTube's terms say, and how to paste a transcript by hand instead.
+
 ### Added
 
 - `/new-topic`: records a learner's goal, level and what their practice looks like in `topics/<topic>/topic.md`.

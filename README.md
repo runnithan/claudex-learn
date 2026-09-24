@@ -90,6 +90,26 @@ to the source.
 YouTube throttles heavy transcript fetching, so the fetcher spaces its requests out and stops
 after three blocked requests. Run it again later and it picks up where it stopped.
 
+## About YouTube transcripts
+
+YouTube has no official way to download captions for videos you don't own: its API's caption
+download [requires permission to edit the video](https://developers.google.com/youtube/v3/docs/captions/download).
+So `fetch_sources.py` uses the community
+[`youtube-transcript-api`](https://github.com/jdepoix/youtube-transcript-api) library, which
+reads the same captions the YouTube player shows. It's unofficial, and YouTube's
+[Terms of Service](https://www.youtube.com/t/terms) restrict automated access, so use it for
+your own learning, gently, and at your own discretion.
+
+To keep that footprint small:
+
+- It makes ordinary requests, waits a few seconds between videos, and stops after three
+  blocked requests.
+- Transcripts stay on your machine (they're gitignored). Only your lessons, which are short
+  summaries that link back to the video, get committed.
+
+If you'd rather not fetch automatically, open the video on YouTube, click **Show transcript**
+below the description, copy the text, and paste it in with `/add-source <topic> <pasted text>`.
+
 ## What stays on your machine
 
 `.gitignore` keeps each topic's source files (transcripts and articles belong to their authors),
